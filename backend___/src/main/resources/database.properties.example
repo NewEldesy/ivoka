@@ -1,0 +1,15 @@
+# Example database properties for local development
+# Copy to database.properties (ignored) and fill with real values or use environment variables
+
+# Use either environment variables (DB_URL, DB_USER, DB_PASSWORD) or this file as fallback.
+db.url=jdbc:mysql://localhost:3306/ivoka_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+db.user=ivoka_user
+db.password=changeme
+db.driver=com.mysql.cj.jdbc.Driver
+
+# Pool settings (optional)
+db.initialSize=5
+db.maxTotal=20
+db.maxIdle=10
+db.minIdle=5
+db.maxWaitMillis=10000

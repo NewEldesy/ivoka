@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <display-name>IVOKA API</display-name>
+    <description>API REST pour le site IVOKA</description>
+
+    <!-- Configuration de la base de données -->
+    <context-param>
+        <param-name>db.url</param-name>
+        <param-value>jdbc:mysql://localhost:3306/ivoka_db?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.user</param-name>
+        <param-value>ivoka_user</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.password</param-name>
+        <param-value>ivoka_password</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.driver</param-name>
+        <param-value>com.mysql.cj.jdbc.Driver</param-value>
+    </context-param>
+
+    <!-- Listener pour initialiser la connexion à la base de données -->
+    <listener>
+        <listener-class>com.ivoka.api.listener.DatabaseInitializer</listener-class>
+    </listener>
+
+    <!-- Page d'accueil par défaut -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Configuration des servlets -->
+    <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>com.ivoka.api.servlets.ProductsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/api/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MessagesServlet</servlet-name>
+        <servlet-class>com.ivoka.api.servlets.MessagesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MessagesServlet</servlet-name>
+        <url-pattern>/api/messages</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UsersServlet</servlet-name>
+        <servlet-class>com.ivoka.api.servlets.UsersServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/api/users</url-pattern>
+    </servlet-mapping>
+
+    <!-- Configuration des sessions -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+    </session-config>
+
+    <!-- Configuration des MIME types -->
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+</web-app>

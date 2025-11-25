@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-dark: #2D3436;
+  --secondary-gray: #6C7B7F;
+  --accent-olive: #7D8471;
+  --hover-gray: #6B7280;
+  --bg-white: #FEFEFE;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-white);
+  color: var(--primary-dark);
+  line-height: 1.6;
+}
+
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+.hero-bg {
+  background: linear-gradient(135deg, rgba(125, 132, 113, 0.1) 0%, rgba(254, 254, 254, 0.9) 100%);
+}
+
+.nav-blur {
+  backdrop-filter: blur(10px);
+  background: rgba(254, 254, 254, 0.9);
+}
+
+.product-card {
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(45, 52, 54, 0.1);
+}
+
+.btn-primary {
+  background: var(--accent-olive);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--hover-gray);
+  transform: translateY(-2px);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-olive), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.organic-bg {
+  background-image: url('../public/resources/organic-background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
