@@ -2,7 +2,7 @@ package com.ivoka.api.dao;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 
