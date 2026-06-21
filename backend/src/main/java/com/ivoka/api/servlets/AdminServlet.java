@@ -319,11 +319,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     private void handleGetOrders(PrintWriter out, HttpServletResponse response) {
-        // TODO: Implémenter la récupération des commandes
-        JsonObject success = Json.createObjectBuilder()
-                .add("orders", Json.createArrayBuilder())
+        response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+        JsonObject error = Json.createObjectBuilder()
+                .add("error", "Récupération des commandes non implémentée")
                 .build();
-        out.print(success.toString());
+        out.print(error.toString());
     }
 
     private void handleCreateProduct(HttpServletRequest request, PrintWriter out, HttpServletResponse response) 
@@ -335,7 +335,6 @@ public class AdminServlet extends HttpServlet {
         BigDecimal price = new BigDecimal(jsonInput.getString("price", "0"));
         String category = jsonInput.getString("category", "");
         String imageUrl = jsonInput.getString("imageUrl", "");
-        int stockQuantity = jsonInput.getInt("stockQuantity", 0);
         boolean available = jsonInput.getBoolean("available", true);
         
         if (name.isEmpty() || price.compareTo(BigDecimal.ZERO) <= 0 || category.isEmpty()) {
@@ -448,20 +447,18 @@ public class AdminServlet extends HttpServlet {
 
     private void handleCreateUser(HttpServletRequest request, PrintWriter out, HttpServletResponse response) 
             throws IOException, SQLException {
-        // TODO: Implémenter la création d'utilisateurs par admin
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
         JsonObject error = Json.createObjectBuilder()
-                .add("error", "Fonctionnalité non implémentée")
+                .add("error", "Création d'utilisateurs par admin non implémentée")
                 .build();
         out.print(error.toString());
     }
 
     private void handleUpdateUser(int userId, HttpServletRequest request, PrintWriter out, HttpServletResponse response) 
             throws IOException, SQLException {
-        // TODO: Implémenter la mise à jour d'utilisateurs par admin
         response.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
         JsonObject error = Json.createObjectBuilder()
-                .add("error", "Fonctionnalité non implémentée")
+                .add("error", "Mise à jour d'utilisateurs par admin non implémentée")
                 .build();
         out.print(error.toString());
     }

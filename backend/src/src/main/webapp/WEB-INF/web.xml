@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>IVOKA - Full Stack Application</display-name>
+    <description>Application complète IVOKA avec API REST et Interface React</description>
+
+    <!-- ============================================================ -->
+    <!-- CORS FILTER - Allow Frontend to Access Backend -->
+    <!-- ============================================================ -->
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>com.ivoka.api.filter.CORSFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Configuration de la base de données -->
+    <context-param>
+        <param-name>db.url</param-name>
+        <param-value>jdbc:mysql://localhost:3306/ivoka_db?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.user</param-name>
+        <param-value>ivoka_user</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.password</param-name>
+        <param-value>ivoka_password</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>db.driver</param-name>
+        <param-value>com.mysql.cj.jdbc.Driver</param-value>
+    </context-param>
+
+    <!-- Listener pour initialiser la connexion à la base de données -->
+    <listener>
+        <listener-class>com.ivoka.api.listener.DatabaseInitializer</listener-class>
+    </listener>
+
+    <!-- Page d'accueil par défaut -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Les servlets sont définis via les annotations @WebServlet dans les classes Java -->
+    <!-- Pas de déclaration en XML pour éviter les doublons avec les annotations -->
+
+    <!-- Configuration des sessions -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+    </session-config>
+
+    <!-- Configuration des MIME types -->
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+</web-app>

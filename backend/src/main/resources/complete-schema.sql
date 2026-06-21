@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
 -- Table des commandes
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user_id INT,
     order_number VARCHAR(50) UNIQUE NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
     status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',

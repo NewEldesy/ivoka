@@ -57,7 +57,7 @@ const About = () => {
             </div>
             <div className="relative">
               <div className="floating-animation">
-                <img src="/resources/hero-tea-plantation.png" alt="Plantation IVOKA" 
+                <img src="./resources/hero-tea-plantation.png" alt="Plantation IVOKA" 
                      className="w-full h-96 object-cover rounded-2xl shadow-2xl" />
               </div>
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-full opacity-50"></div>

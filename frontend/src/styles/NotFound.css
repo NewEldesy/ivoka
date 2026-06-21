@@ -1,0 +1,165 @@
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.not-found-content {
+  background: white;
+  border-radius: 10px;
+  padding: 60px 40px;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.error-code {
+  font-size: 120px;
+  font-weight: 700;
+  color: #667eea;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-title {
+  font-size: 32px;
+  color: #333;
+  margin: 20px 0 10px 0;
+  font-weight: 600;
+}
+
+.error-message {
+  font-size: 16px;
+  color: #666;
+  margin: 10px 0 30px 0;
+  line-height: 1.6;
+}
+
+.error-icon {
+  font-size: 80px;
+  margin: 20px 0;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.helpful-links {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.helpful-links h3 {
+  color: #333;
+  margin: 0 0 20px 0;
+  font-size: 18px;
+}
+
+.helpful-links ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.helpful-links li a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.helpful-links li a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .not-found-content {
+    padding: 40px 20px;
+  }
+
+  .error-code {
+    font-size: 80px;
+  }
+
+  .error-title {
+    font-size: 24px;
+  }
+
+  .error-message {
+    font-size: 14px;
+  }
+
+  .error-icon {
+    font-size: 60px;
+  }
+
+  .not-found-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .helpful-links ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

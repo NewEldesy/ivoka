@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Benefits = () => {
@@ -228,12 +229,12 @@ const Benefits = () => {
             Découvrez nos produits naturels et commencez votre voyage vers une meilleure santé et un bien-être durable.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/products" className="btn-primary px-8 py-4 rounded-full text-lg font-medium">
+            <Link to="/products" className="btn-primary px-8 py-4 rounded-full text-lg font-medium">
               Découvrir nos produits
-            </a>
-            <a href="/contact" className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full text-lg font-medium hover:border-gray-400 transition-colors">
+            </Link>
+            <Link to="/contact" className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full text-lg font-medium hover:border-gray-400 transition-colors">
               Nous contacter
-            </a>
+            </Link>
           </div>
         </div>
       </section>

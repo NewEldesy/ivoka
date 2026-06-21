@@ -1,23 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { productsAPI } from '../services/api';
+import { CartContext } from '../context/CartContext';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const { addToCart } = useContext(CartContext);
   
   const heroRef = useScrollAnimation();
   const teaRef = useScrollAnimation();
   const avocadoRef = useScrollAnimation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchProducts();
+  const getMockProducts = useCallback(() => {
+    const mockProducts = [
+      {
+        id: 1,
+        name: "Thé Vert Bio",
+        description: "Thé vert biologique cultivé localement, riche en antioxydants. Parfait pour vos moments de détente.",
+        price: "12.90",
+        category: "tea",
+        imageUrl: "./resources/tea-leaves-product.png",
+        available: true
+      },
+      {
+        id: 2,
+        name: "Thé Noir Premium",
+        description: "Thé noir de qualité supérieure avec des notes épicées et maltées. Idéal pour le petit-déjeuner.",
+        price: "15.50",
+        category: "tea",
+        imageUrl: "./resources/tea-leaves-product.png",
+        available: true
+      },
+      {
+        id: 3,
+        name: "Thé Blanc Délicat",
+        description: "Thé blanc aux arômes délicats et floraux. Une expérience gustative raffinée.",
+        price: "18.90",
+        category: "tea",
+        imageUrl: "./resources/tea-leaves-product.png",
+        available: true
+      },
+      {
+        id: 4,
+        name: "Huile d'Avocat Pressée à Froid",
+        description: "Huile d'avocat pure pressée à froid. Parfaite pour la cuisine et les soins cosmétiques.",
+        price: "24.90",
+        category: "avocado_oil",
+        imageUrl: "./resources/avocado-oil-bottle.png",
+        available: true
+      },
+      {
+        id: 5,
+        name: "Huile d'Avocat Cosmétique",
+        description: "Huile d'avocat spécialement conçue pour les soins de la peau et des cheveux. Riche en vitamines E et K.",
+        price: "29.90",
+        category: "avocado_oil",
+        imageUrl: "./resources/avocado-oil-bottle.png",
+        available: true
+      }
+    ];
+
+    if (selectedCategory === 'all') {
+      return mockProducts;
+    }
+    return mockProducts.filter(p => p.category === selectedCategory);
   }, [selectedCategory]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -42,61 +95,17 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, getMockProducts]);
 
-  const getMockProducts = () => {
-    const mockProducts = [
-      {
-        id: 1,
-        name: "Thé Vert Bio",
-        description: "Thé vert biologique cultivé localement, riche en antioxydants. Parfait pour vos moments de détente.",
-        price: "12.90",
-        category: "tea",
-        imageUrl: "/resources/tea-leaves-product.png",
-        available: true
-      },
-      {
-        id: 2,
-        name: "Thé Noir Premium",
-        description: "Thé noir de qualité supérieure avec des notes épicées et maltées. Idéal pour le petit-déjeuner.",
-        price: "15.50",
-        category: "tea",
-        imageUrl: "/resources/tea-leaves-product.png",
-        available: true
-      },
-      {
-        id: 3,
-        name: "Thé Blanc Délicat",
-        description: "Thé blanc aux arômes délicats et floraux. Une expérience gustative raffinée.",
-        price: "18.90",
-        category: "tea",
-        imageUrl: "/resources/tea-leaves-product.png",
-        available: true
-      },
-      {
-        id: 4,
-        name: "Huile d'Avocat Pressée à Froid",
-        description: "Huile d'avocat pure pressée à froid. Parfaite pour la cuisine et les soins cosmétiques.",
-        price: "24.90",
-        category: "avocado_oil",
-        imageUrl: "/resources/avocado-oil-bottle.png",
-        available: true
-      },
-      {
-        id: 5,
-        name: "Huile d'Avocat Cosmétique",
-        description: "Huile d'avocat spécialement conçue pour les soins de la peau et des cheveux. Riche en vitamines E et K.",
-        price: "29.90",
-        category: "avocado_oil",
-        imageUrl: "/resources/avocado-oil-bottle.png",
-        available: true
-      }
-    ];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchProducts();
+  }, [fetchProducts]);
 
-    if (selectedCategory === 'all') {
-      return mockProducts;
-    }
-    return mockProducts.filter(p => p.category === selectedCategory);
+  const handleAddToCart = (product) => {
+    addToCart(product, 1);
+    setSuccessMessage(`${product.name} ajouté au panier !`);
+    setTimeout(() => setSuccessMessage(''), 3000);
   };
 
   const teaProducts = products.filter(p => p.category === 'tea');
@@ -109,10 +118,8 @@ const Products = () => {
           <div className="text-red-600 mb-4">⚠️</div>
           <h2 className="text-2xl font-bold mb-4">Erreur de chargement</h2>
           <p className="text-gray-600 mb-8">{error}</p>
-          <button 
-            onClick={fetchProducts}
-            className="btn-primary px-6 py-3 rounded-full font-medium"
-          >
+
+          <button onClick={fetchProducts} className="btn-primary px-6 py-3 rounded-full font-medium">
             Réessayer
           </button>
         </div>
@@ -122,6 +129,11 @@ const Products = () => {
 
   return (
     <div className="Products">
+      {successMessage && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-40 animate-bounce">
+          ✓ {successMessage}
+        </div>
+      )}
       {/* Hero Section */}
       <section className="pt-24 pb-16 hero-bg" ref={heroRef}>
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -228,7 +240,9 @@ const Products = () => {
                         Riche en antioxydants
                       </div>
                     </div>
-                    <button className="w-full btn-primary py-3 rounded-full font-medium hover:scale-105 transition-transform">
+                    <button 
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full btn-primary py-3 rounded-full font-medium hover:scale-105 transition-transform">
                       Ajouter au panier
                     </button>
                   </div>
@@ -300,7 +314,9 @@ const Products = () => {
                         Riche en vitamines
                       </div>
                     </div>
-                    <button className="w-full btn-primary py-3 rounded-full font-medium hover:scale-105 transition-transform">
+                    <button 
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full btn-primary py-3 rounded-full font-medium hover:scale-105 transition-transform">
                       Ajouter au panier
                     </button>
                   </div>

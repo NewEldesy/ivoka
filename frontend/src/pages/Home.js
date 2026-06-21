@@ -51,7 +51,7 @@ const Home = () => {
           </div>
           <div className="relative">
             <div className="floating-animation">
-              <img src="/resources/hero-tea-plantation.png" alt="Plantation de thé IVOKA" 
+              <img src="./resources/hero-tea-plantation.png" alt="Plantation de thé IVOKA" 
                    className="w-full h-auto rounded-2xl shadow-2xl" />
             </div>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-green-100 to-green-200 rounded-full opacity-50"></div>
@@ -123,7 +123,7 @@ const Home = () => {
             <div className="product-card p-8 rounded-3xl fade-in-up">
               <div className="flex flex-col lg:flex-row items-center gap-8">
                 <div className="flex-1">
-                  <img src="/resources/tea-leaves-product.png" alt="Thé IVOKA" 
+                  <img src="./resources/tea-leaves-product.png" alt="Thé IVOKA" 
                        className="w-full h-64 object-cover rounded-2xl" />
                 </div>
                 <div className="flex-1 text-center lg:text-left">
@@ -147,7 +147,7 @@ const Home = () => {
             <div className="product-card p-8 rounded-3xl fade-in-up">
               <div className="flex flex-col lg:flex-row items-center gap-8">
                 <div className="flex-1">
-                  <img src="/resources/avocado-oil-bottle.png" alt="Huile d'Avocat IVOKA" 
+                  <img src="./resources/avocado-oil-bottle.png" alt="Huile d'Avocat IVOKA" 
                        className="w-full h-64 object-cover rounded-2xl" />
                 </div>
                 <div className="flex-1 text-center lg:text-left">
