@@ -1,4 +1,4 @@
-# IVOKA — Application E-commerce Full Stack
+# IVOKA, Application E-commerce Full Stack
 
 Application e-commerce pour thés biologiques et huile d'avocat naturels.  
 Backend Java 21 Servlets + Frontend React 18, déployés en un seul WAR sur Tomcat.
