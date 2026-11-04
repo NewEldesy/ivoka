@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       if (response && response.user) {
         setUser(response.user);
         setIsAuthenticated(true);
-        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('authToken', response.sessionToken);
         localStorage.setItem('user', JSON.stringify(response.user));
         return response;
       } else {
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       if (response && response.user) {
         setUser(response.user);
         setIsAuthenticated(true);
-        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('authToken', response.sessionToken);
         localStorage.setItem('user', JSON.stringify(response.user));
         return response;
       } else {

@@ -20,9 +20,11 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet("/api/admin")
 public class AdminServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(AdminServlet.class.getName());
     private ProductDAO productDAO;
     private UserAuthDAO userAuthDAO;
 
@@ -34,14 +36,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         PrintWriter out = response.getWriter();
 
@@ -75,10 +74,10 @@ public class AdminServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            logger.severe("Erreur AdminServlet.doGet: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject error = Json.createObjectBuilder()
                     .add("error", "Erreur lors de la récupération des données admin")
-                    .add("message", e.getMessage())
                     .build();
             out.print(error.toString());
         } finally {
@@ -87,14 +86,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         PrintWriter out = response.getWriter();
 
@@ -129,10 +125,10 @@ public class AdminServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            logger.severe("Erreur AdminServlet.doPost: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject error = Json.createObjectBuilder()
                     .add("error", "Erreur lors du traitement de la requête admin")
-                    .add("message", e.getMessage())
                     .build();
             out.print(error.toString());
         } finally {
@@ -141,14 +137,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         PrintWriter out = response.getWriter();
 
@@ -185,10 +178,10 @@ public class AdminServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            logger.severe("Erreur AdminServlet.doPut: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject error = Json.createObjectBuilder()
                     .add("error", "Erreur lors de la mise à jour")
-                    .add("message", e.getMessage())
                     .build();
             out.print(error.toString());
         } finally {
@@ -197,14 +190,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         PrintWriter out = response.getWriter();
 
@@ -241,10 +231,10 @@ public class AdminServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            logger.severe("Erreur AdminServlet.doDelete: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject error = Json.createObjectBuilder()
                     .add("error", "Erreur lors de la suppression")
-                    .add("message", e.getMessage())
                     .build();
             out.print(error.toString());
         } finally {
@@ -495,13 +485,4 @@ public class AdminServlet extends HttpServlet {
                 .add("updatedAt", product.getUpdatedAt().toString());
     }
 
-    @Override
-    protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
 }

@@ -15,9 +15,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @WebServlet("/api/auth")
 public class AuthServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(AuthServlet.class.getName());
     private UserAuthDAO userAuthDAO;
 
     @Override
@@ -32,9 +34,6 @@ public class AuthServlet extends HttpServlet {
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         PrintWriter out = response.getWriter();
 
@@ -61,10 +60,10 @@ public class AuthServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            logger.severe("Erreur AuthServlet.doPost: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject error = Json.createObjectBuilder()
                     .add("error", "Erreur lors du traitement de la requête")
-                    .add("message", e.getMessage())
                     .build();
             out.print(error.toString());
         } finally {
@@ -101,10 +100,10 @@ public class AuthServlet extends HttpServlet {
         }
         
         // Validation du mot de passe
-        if (password.length() < 8) {
+        if (!PasswordUtils.isPasswordStrong(password)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             JsonObject error = Json.createObjectBuilder()
-                    .add("error", "Le mot de passe doit contenir au moins 8 caractères")
+                    .add("error", "Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre")
                     .build();
             out.print(error.toString());
             return;
@@ -257,13 +256,4 @@ public class AuthServlet extends HttpServlet {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
-    @Override
-    protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
 }

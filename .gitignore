@@ -1,169 +1,45 @@
-# =============================================================================
-# GITIGNORE — IVOKA PROJECT
-# Java Backend + React Frontend + MySQL Database
-# =============================================================================
-
-# =============================================================================
-# IDE & EDITOR
-# =============================================================================
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-.DS_Store
-.AppleDouble
-.LSOverride
-*.sublime-workspace
-*.sublime-project
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.iml
-
-# =============================================================================
-# BUILD & COMPILATION
-# =============================================================================
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-
-# Gradle (if used)
-build/
-gradle/
-.gradle/
-*.gradle.kts
-
-# =============================================================================
-# NODE & FRONTEND (React)
-# =============================================================================
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-.eslintcache
-.node_repl_history
-*.tsbuildinfo
-dist/
-build/
-
-# =============================================================================
-# ENVIRONMENT & CONFIGURATION
-# =============================================================================
+# Credentials & config sensible
 .env
-.env.local
-.env.*.local
-*.properties
-!database.properties.example
 
-# =============================================================================
-# DATABASE
-# =============================================================================
-*.sql.backup
-database_dump.sql
-*.db
-*.sqlite
-*.sqlite3
-
-# =============================================================================
-# LOGS & RUNTIME
-# =============================================================================
-*.log
-logs/
-catalina.out
-catalina.*.log
-
-# =============================================================================
-# OS SPECIFIC
-# =============================================================================
-Thumbs.db
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-*.lnk
-
-# =============================================================================
-# JAVA SPECIFIC
-# =============================================================================
+# Build Maven / Java
+target/
 *.class
 *.jar
 *.war
 *.ear
-*.zip
-*.tar.gz
-*.rar
+
+# Build React
+frontend/build/
+frontend/node_modules/
+
+# Node embarqué (frontend-maven-plugin télécharge Node localement)
+frontend/node/
+frontend/.pnp
+frontend/.pnp.js
+
+# Tests
+frontend/coverage/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.iml
 .classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
-
-# =============================================================================
-# TEST COVERAGE
-# =============================================================================
-coverage/
-.nyc_output/
-junit-results/
-target/site/
-jacoco.exec
-
-# =============================================================================
-# BACKUPS & TEMPORARY FILES
-# =============================================================================
-*.bak
-*.backup
-*~
-*.tmp
-*.temp
+.settings/
 *.swp
 *.swo
 
-# =============================================================================
-# DEPLOYMENT & DOCKER
-# =============================================================================
-.docker/
-docker-compose.override.yml
-.dockerignore
-
-# =============================================================================
-# AZURE & CLOUD
-# =============================================================================
-.azure/
-local.settings.json
-*.PublishSettings
-
-# =============================================================================
-# GITHUB
-# =============================================================================
-.github/workflows/secrets/
-
-# =============================================================================
-# PROJECT SPECIFIC
-# =============================================================================
-backend___/
-database.properties
-.env.production
-secrets.properties
-
-# =============================================================================
-# MISC
-# =============================================================================
-*.orig
-*.rej
-.venv/
-venv/
-ENV/
+# Fichiers Claude Code
+MEMORY.md
+memory/
+.claude/
