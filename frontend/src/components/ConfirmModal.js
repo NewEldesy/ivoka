@@ -5,13 +5,13 @@ import React from 'react';
  *
  * Props:
  *   isOpen      {boolean}
- *   type        {"confirm"|"alert"|"error"}  — défaut "confirm"
+ *   type        {"confirm"|"alert"|"error"}  - défaut "confirm"
  *   title       {string}
  *   message     {string}
- *   confirmLabel {string}  — défaut "Confirmer"
- *   cancelLabel  {string}  — défaut "Annuler"
+ *   confirmLabel {string}  - défaut "Confirmer"
+ *   cancelLabel  {string}  - défaut "Annuler"
  *   onConfirm   {function}
- *   onCancel    {function}  — omis pour type "alert"/"error"
+ *   onCancel    {function}  - omis pour type "alert"/"error"
  */
 const ConfirmModal = ({
   isOpen,

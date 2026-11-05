@@ -23,7 +23,7 @@ public class CartDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Cart cart = mapResultSetToCart(rs);
-                    // Load cart items
+                    // Charger les articles du panier
                     cart.setItems(getCartItems(cart.getId()));
                     return cart;
                 }
@@ -46,7 +46,7 @@ public class CartDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Cart cart = mapResultSetToCart(rs);
-                    // Load cart items
+                    // Charger les articles du panier
                     cart.setItems(getCartItems(cart.getId()));
                     return cart;
                 }
@@ -95,7 +95,7 @@ public class CartDAO {
      * Add an item to cart (or update quantity if already exists)
      */
     public boolean addItemToCart(int cartId, int productId, int quantity) throws SQLException {
-        // First check if item already exists in cart
+        // Vérifier si l'article est déjà dans le panier
         String checkSql = "SELECT id, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -106,7 +106,7 @@ public class CartDAO {
 
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next()) {
-                    // Item exists, update quantity
+                    // Article existant, mettre à jour la quantité
                     int existingId = rs.getInt("id");
                     int existingQuantity = rs.getInt("quantity");
                     return updateItemQuantity(existingId, existingQuantity + quantity);
@@ -114,7 +114,7 @@ public class CartDAO {
             }
         }
 
-        // Item doesn't exist, insert new
+        // Article absent, insérer
         String insertSql = "INSERT INTO cart_items (cart_id, product_id, quantity, added_at) VALUES (?, ?, ?, NOW())";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -203,7 +203,7 @@ public class CartDAO {
                         item.setAddedAt(rs.getTimestamp("ci.added_at").toLocalDateTime());
                     }
 
-                    // Map product
+                    // Mapper le produit
                     Product product = new Product();
                     product.setId(rs.getInt("p.id"));
                     product.setName(rs.getString("p.name"));

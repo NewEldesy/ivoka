@@ -22,7 +22,7 @@ public class OrderItem {
         this.totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
-    // Getters and Setters
+    // Accesseurs et mutateurs
     public int getId() {
         return id;
     }

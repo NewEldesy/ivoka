@@ -12,10 +12,10 @@ const Home = () => {
   const ctaRef = useScrollAnimation();
 
   useEffect(() => {
-    // Initialize Splitting.js
+    // Initialiser Splitting.js
     Splitting();
 
-    // Animate hero elements
+    // Animer les éléments hero
     anime({
       targets: '.fade-in-up',
       opacity: [0, 1],

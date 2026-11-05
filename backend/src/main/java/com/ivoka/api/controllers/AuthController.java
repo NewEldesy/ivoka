@@ -19,7 +19,15 @@ import java.util.Map;
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    private final UserAuthDAO userAuthDAO = new UserAuthDAO();
+    private final UserAuthDAO userAuthDAO;
+
+    public AuthController() {
+        this.userAuthDAO = new UserAuthDAO();
+    }
+
+    AuthController(UserAuthDAO userAuthDAO) {
+        this.userAuthDAO = userAuthDAO;
+    }
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> handlePost(@RequestBody Map<String, Object> body) {

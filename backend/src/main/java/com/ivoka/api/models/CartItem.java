@@ -21,7 +21,7 @@ public class CartItem {
         this.addedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    // Accesseurs et mutateurs
     public int getId() {
         return id;
     }

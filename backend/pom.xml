@@ -18,11 +18,12 @@
     <packaging>jar</packaging>
 
     <name>IVOKA API - Spring Boot</name>
-    <description>Application e-commerce IVOKA — Java 21 + Spring Boot + React 18</description>
+    <description>Application e-commerce IVOKA, Java 25 + Spring Boot + React 18</description>
 
     <properties>
         <java.version>21</java.version>
         <frontend.directory>${project.basedir}/../frontend</frontend.directory>
+        <skipFrontend>false</skipFrontend>
     </properties>
 
     <dependencies>
@@ -81,7 +82,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Frontend Maven Plugin — build React et copie dans resources/static -->
+            <!-- Frontend Maven Plugin build React et copie dans resources/static -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -90,6 +91,7 @@
                     <workingDirectory>${frontend.directory}</workingDirectory>
                     <nodeVersion>v18.17.0</nodeVersion>
                     <npmVersion>9.8.1</npmVersion>
+                    <skip>${skipFrontend}</skip>
                 </configuration>
                 <executions>
                     <execution>

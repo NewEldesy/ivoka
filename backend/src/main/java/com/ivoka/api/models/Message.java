@@ -24,7 +24,7 @@ public class Message {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    // Accesseurs et mutateurs
     public int getId() {
         return id;
     }

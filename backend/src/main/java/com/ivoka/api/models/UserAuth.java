@@ -31,7 +31,7 @@ public class UserAuth {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
+    // Accesseurs et mutateurs
     public int getId() {
         return id;
     }

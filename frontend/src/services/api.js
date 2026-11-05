@@ -9,7 +9,7 @@ const api = axios.create({
   },
 });
 
-// Products API
+// API Produits
 export const productsAPI = {
   getAll: async () => {
     const response = await api.get('/products');
@@ -42,7 +42,7 @@ export const productsAPI = {
   }
 };
 
-// Messages API
+// API Messages
 export const messagesAPI = {
   getAll: async () => {
     const response = await api.get('/messages');
@@ -65,7 +65,7 @@ export const messagesAPI = {
   }
 };
 
-// Users API
+// API Utilisateurs
 export const usersAPI = {
   create: async (userData) => {
     const response = await api.post('/users', userData);
@@ -73,7 +73,7 @@ export const usersAPI = {
   }
 };
 
-// Cart API
+// API Panier
 export const cartAPI = {
   getCart: async (sessionToken) => {
     try {
@@ -118,7 +118,7 @@ export const cartAPI = {
   }
 };
 
-// Orders API
+// API Commandes
 export const ordersAPI = {
   getAll: async () => {
     const response = await api.get('/orders');
@@ -166,7 +166,7 @@ export const ordersAPI = {
   }
 };
 
-// Auth API
+// API Authentification
 export const authAPI = {
   register: async (userData) => {
     const response = await api.post('/auth', {

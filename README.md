@@ -1,4 +1,4 @@
-# IVOKA — Application e-commerce
+# IVOKA, Application e-commerce
 
 Application e-commerce complète avec espace admin. Backend Spring Boot 3.2.5 + Frontend React 18, servis depuis le même serveur Java.
 
@@ -6,7 +6,7 @@ Application e-commerce complète avec espace admin. Backend Spring Boot 3.2.5 + 
 
 ## Prérequis
 
-- Java 21
+- Java 25
 - Maven 3.8+
 - Node.js 18+ (géré automatiquement par `frontend-maven-plugin`)
 - MySQL (XAMPP recommandé en local)
@@ -50,7 +50,7 @@ DB_NAME=ivoka_db
 DB_USER=root            # utilisateur MySQL
 DB_PASSWORD=            # mot de passe MySQL (vide par défaut sur XAMPP)
 
-# CORS — origines autorisées (séparées par des virgules)
+# CORS origines autorisées (séparées par des virgules)
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
 
 # Comptes créés automatiquement au premier démarrage (si absents en base)
@@ -132,7 +132,7 @@ ivoka/
 │   │   ├── application.properties
 │   │   ├── complete-schema.sql   # Schéma MySQL complet
 │   │   └── static/               # Build React (généré par Maven)
-│   ├── .env                  # Variables locales — NE PAS COMMITTER
+│   ├── .env                  # Variables locales à NE PAS COMMITTER
 │   └── .env.example          # Modèle à copier
 └── frontend/                 # React 18
     ├── src/
@@ -140,7 +140,7 @@ ivoka/
     │   ├── context/          # AuthContext, CartContext
     │   ├── pages/            # Home, Products, Admin, Login, ...
     │   └── services/api.js   # Tous les appels API (axios)
-    └── .env                  # Variables locales — NE PAS COMMITTER
+    └── .env                  # Variables locales à NE PAS COMMITTER
 ```
 
 ---

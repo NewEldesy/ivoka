@@ -1,21 +1,18 @@
 package com.ivoka.api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import com.ivoka.api.config.DataSourceConfig;
-import com.ivoka.api.config.DatabaseConnectionInitializer;
-import com.ivoka.api.config.DataInitializer;
 import com.ivoka.api.dao.UserAuthDAO;
 import com.ivoka.api.models.UserAuth;
 import com.ivoka.api.models.UserSession;
+import com.ivoka.api.utils.PasswordUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -25,25 +22,19 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(
-    value = AuthController.class,
-    excludeFilters = @ComponentScan.Filter(
-        type = FilterType.ASSIGNABLE_TYPE,
-        classes = { DataSourceConfig.class, DatabaseConnectionInitializer.class, DataInitializer.class }
-    )
-)
+@ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    // UserAuthDAO est instancié directement dans le contrôleur (new UserAuthDAO())
-    // → on injecte un mock via le context Spring pour le remplacer dans les tests
-    @MockBean
+    @Mock
     private UserAuthDAO userAuthDAO;
+
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(new AuthController(userAuthDAO)).build();
+    }
 
     // --- login ---
 
@@ -198,8 +189,7 @@ class AuthControllerTest {
         u.setFirstName("Test");
         u.setLastName("User");
         u.setEmail(email);
-        // Hash réel de "User@ivoka2024" pour que verifyPassword fonctionne en test
-        u.setPasswordHash(com.ivoka.api.utils.PasswordUtils.hashPassword("User@ivoka2024"));
+        u.setPasswordHash(PasswordUtils.hashPassword("User@ivoka2024"));
         u.setRole(role);
         return u;
     }
