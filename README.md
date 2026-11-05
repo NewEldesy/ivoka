@@ -1,205 +1,152 @@
-# IVOKA, Application E-commerce Full Stack
+# IVOKA — Application e-commerce
 
-Application e-commerce pour thés biologiques et huile d'avocat naturels.  
-Backend Java 21 Servlets + Frontend React 18, déployés en un seul WAR sur Tomcat.
-
-## Captures d'écran
-
-### Accueil
-![Accueil](screenshots/01-home.jpg)
-
-### Catalogue produits
-![Produits](screenshots/02-products.jpg)
-
-### Connexion
-![Connexion](screenshots/03-login.jpg)
-
-### Inscription
-![Inscription](screenshots/04-register.jpg)
-
-### À propos
-![À propos](screenshots/05-about.jpg)
-
-### Bienfaits
-![Bienfaits](screenshots/06-benefits.jpg)
-
-### Contact
-![Contact](screenshots/07-contact.jpg)
+Application e-commerce complète avec espace admin. Backend Spring Boot 3.2.5 + Frontend React 18, servis depuis le même serveur Java.
 
 ---
 
-## Stack technique
+## Prérequis
 
-| Couche | Technologie |
-|---|---|
-| Backend | Java 21, Jakarta EE 6 Servlets (WAR) |
-| Base de données | MySQL 8, Apache Commons DBCP2 (pool) |
-| Authentification | PBKDF2WithHmacSHA256 + tokens de session en DB |
-| Frontend | React 18, React Router 6, Context API |
-| Style | Tailwind CSS 3, Animate.js |
-| Build | Maven 3 + frontend-maven-plugin (Node embarqué) |
-| Serveur | Apache Tomcat 10+ |
+- Java 21
+- Maven 3.8+
+- Node.js 18+ (géré automatiquement par `frontend-maven-plugin`)
+- MySQL (XAMPP recommandé en local)
 
 ---
 
 ## Installation
 
-### Prérequis
-
-- Java 21+
-- Maven 3.8+
-- MySQL 8
-- Node 18+ (ou laisser Maven le télécharger via le plugin)
-- Apache Tomcat 10+
-
-### 1. Créer la base de données
-
-```sql
-CREATE DATABASE ivoka_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'ivoka_user'@'localhost' IDENTIFIED BY 'ivoka_password';
-GRANT ALL PRIVILEGES ON ivoka_db.* TO 'ivoka_user'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-Puis importer le schéma :
+### 1. Cloner le dépôt
 
 ```bash
-mysql -u root -p ivoka_db < backend/src/main/resources/schema.sql
+git clone <url-du-repo>
+cd ivoka
 ```
 
-### 2. Configurer les variables d'environnement
+### 2. Initialiser la base de données
 
-Copier `.env.example` en `.env` à la racine du projet et adapter les valeurs :
+Démarrer MySQL (XAMPP), puis exécuter le schéma complet :
 
 ```bash
-cp .env.example .env
+# Windows (XAMPP)
+"C:\xampp\mysql\bin\mysql.exe" -u root -e "CREATE DATABASE IF NOT EXISTS ivoka_db;"
+"C:\xampp\mysql\bin\mysql.exe" -u root ivoka_db < backend/src/main/resources/complete-schema.sql
 ```
+
+### 3. Configurer les variables d'environnement
+
+Copier le fichier exemple et le remplir :
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+Ouvrir `backend/.env` et renseigner les valeurs :
 
 ```env
+# Base de données
 DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=ivoka_db
-DB_USER=ivoka_user
-DB_PASSWORD=your_password
+DB_USER=root            # utilisateur MySQL
+DB_PASSWORD=            # mot de passe MySQL (vide par défaut sur XAMPP)
 
+# CORS — origines autorisées (séparées par des virgules)
 CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8080
-REACT_APP_API_URL=http://localhost:8080/ivoka-api/api
+
+# Comptes créés automatiquement au premier démarrage (si absents en base)
+# Décommenter et personnaliser si nécessaire.
+# Les mots de passe doivent contenir 8+ caractères avec majuscule, minuscule et chiffre ou caractère spécial.
+# INIT_ADMIN_EMAIL=admin@ivoka.fr
+# INIT_ADMIN_PASSWORD=Admin@ivoka2024
+# INIT_ADMIN_FIRST_NAME=Admin
+# INIT_ADMIN_LAST_NAME=IVOKA
+
+# INIT_USER_EMAIL=user@ivoka.fr
+# INIT_USER_PASSWORD=User@ivoka2024
+# INIT_USER_FIRST_NAME=Utilisateur
+# INIT_USER_LAST_NAME=Test
 ```
 
-Copier également `frontend/.env.example` en `frontend/.env` :
+> **Si les variables `INIT_*` sont commentées**, les comptes par défaut seront tout de même créés avec les valeurs hardcodées dans `application.properties` (voir ci-dessous). Décommenter les lignes uniquement si vous voulez des credentials différents.
 
-```bash
-cp frontend/.env.example frontend/.env
-```
+Valeurs par défaut appliquées si les variables ne sont pas définies :
 
-### 3. Builder et déployer
+| Variable | Valeur par défaut |
+|---|---|
+| `INIT_ADMIN_EMAIL` | `admin@ivoka.fr` |
+| `INIT_ADMIN_PASSWORD` | `Admin@ivoka2024` |
+| `INIT_USER_EMAIL` | `user@ivoka.fr` |
+| `INIT_USER_PASSWORD` | `User@ivoka2024` |
+
+### 4. Lancer l'application
 
 ```bash
 cd backend
-mvn clean package
+mvn spring-boot:run
 ```
 
-Le build Maven va automatiquement :
-1. Télécharger Node 18 et npm 9 (via `frontend-maven-plugin`)
-2. Faire `npm install` dans `frontend/`
-3. Faire `npm run build` (React → `frontend/build/`)
-4. Embarquer le build React dans le WAR
-
-Déployer `backend/target/ivoka-api.war` dans le répertoire `webapps/` de Tomcat.
-
-### 4. Accéder à l'application
+Le plugin Maven compile automatiquement le frontend React. L'application est accessible à :
 
 ```
 http://localhost:8080/ivoka-api/
 ```
 
+L'espace admin est accessible à :
+
+```
+http://localhost:8080/ivoka-api/admin
+```
+
 ---
 
-## Développement
+## Développement frontend (hot reload)
 
-### Frontend seul (sans backend)
+Pour travailler sur le frontend avec rechargement automatique :
 
 ```bash
+# Créer le fichier de config frontend
+echo "REACT_APP_API_URL=http://localhost:8080/ivoka-api/api" > frontend/.env
+echo "PUBLIC_URL=/ivoka-api" >> frontend/.env
+
 cd frontend
 npm install
 npm start
-# → http://localhost:3000/ivoka-api
 ```
 
-### Backend seul (API)
-
-Déployer sur Tomcat et tester les endpoints :
-
-```
-POST http://localhost:8080/ivoka-api/api/auth   (action: register/login/logout)
-GET  http://localhost:8080/ivoka-api/api/products
-GET  http://localhost:8080/ivoka-api/api/admin  (Bearer token admin requis)
-```
+Le serveur de dev React tourne sur `http://localhost:3000/ivoka-api/`.
 
 ---
 
-## Fonctionnalités
+## Structure du projet
 
-### Boutique
-- Catalogue produits filtrable par catégorie (Thés / Huiles d'Avocat)
-- Panier avec gestion des quantités
-- Historique de commandes
-
-### Authentification
-- Inscription avec validation : email, mot de passe fort (≥ 8 caractères, majuscule + minuscule + chiffre)
-- Connexion avec token de session stocké en base
-- Mots de passe hashés PBKDF2WithHmacSHA256 (sel aléatoire, 10 000 itérations)
-
-### Back-office (admin)
-- Dashboard avec statistiques produits et utilisateurs
-- CRUD produits et utilisateurs
-- Accès protégé par vérification du rôle admin sur chaque endpoint
-
-### Pages
-- Accueil avec section valeurs et newsletter
-- À propos avec histoire de la marque
-- Bienfaits des produits
-- Formulaire de contact
+```
+ivoka/
+├── backend/                  # Spring Boot 3.2.5
+│   ├── src/main/java/com/ivoka/api/
+│   │   ├── config/           # WebConfig, DataSourceConfig, DataInitializer
+│   │   ├── controllers/      # AuthController, AdminController, ...
+│   │   ├── dao/              # UserAuthDAO, ProductDAO, OrderDAO, ...
+│   │   ├── models/           # User, Product, Order, ...
+│   │   └── utils/            # PasswordUtils, SessionUtils
+│   ├── src/main/resources/
+│   │   ├── application.properties
+│   │   ├── complete-schema.sql   # Schéma MySQL complet
+│   │   └── static/               # Build React (généré par Maven)
+│   ├── .env                  # Variables locales — NE PAS COMMITTER
+│   └── .env.example          # Modèle à copier
+└── frontend/                 # React 18
+    ├── src/
+    │   ├── components/       # Navigation, Footer, Cart, ConfirmModal, ...
+    │   ├── context/          # AuthContext, CartContext
+    │   ├── pages/            # Home, Products, Admin, Login, ...
+    │   └── services/api.js   # Tous les appels API (axios)
+    └── .env                  # Variables locales — NE PAS COMMITTER
+```
 
 ---
 
 ## Sécurité
 
-| Problème | Correction |
-|---|---|
-| CORS wildcard `*` + credentials | Whitelist d'origins avec header `Vary: Origin` |
-| Token mismatch login | Frontend lit `sessionToken` (clé renvoyée par l'API) |
-| Mot de passe faible accepté | `isPasswordStrong()` : 3 types de caractères requis |
-| Credentials DB hardcodés | `DatabaseConnection` charge `.env` en priorité |
-| Logs `printStackTrace()` | `java.util.logging.Logger` dans tous les Servlets |
-
----
-
-## Structure
-
-```
-ivoka/
-├── backend/
-│   ├── src/main/java/com/ivoka/api/
-│   │   ├── dao/            # Accès base de données (DAO pattern)
-│   │   ├── filter/         # CORSFilter
-│   │   ├── listener/       # DatabaseInitializer (démarrage Tomcat)
-│   │   ├── models/         # Entités Java
-│   │   ├── servlets/       # Endpoints REST (@WebServlet)
-│   │   └── utils/          # PasswordUtils, SessionUtils
-│   ├── src/main/resources/ # schema.sql
-│   ├── src/main/webapp/    # WEB-INF/web.xml, index.html (React build)
-│   └── pom.xml
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # Navigation, Footer
-│   │   ├── context/        # AuthContext, CartContext
-│   │   ├── pages/          # Home, Products, Login, Register, Admin…
-│   │   └── services/       # api.js (Axios)
-│   ├── .env
-│   └── package.json
-├── screenshots/
-├── .env                    # Credentials (non versionné)
-├── .env.example
-└── .gitignore
-```
+- Ne jamais committer les fichiers `.env`.
+- Les mots de passe sont hachés en PBKDF2WithHmacSHA256 (10 000 itérations).
+- Les sessions sont stockées en base avec expiration 24h.

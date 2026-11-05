@@ -2,12 +2,21 @@ import React, { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import { ordersAPI } from '../services/api';
+import ConfirmModal from './ConfirmModal';
+
+const getImageSrc = (imageUrl) => {
+  if (!imageUrl) return '';
+  if (imageUrl.startsWith('/')) return `${process.env.PUBLIC_URL}${imageUrl}`;
+  return imageUrl;
+};
 
 const Cart = ({ isOpen, onClose }) => {
   const { cart, removeFromCart, updateQuantity, clearCart, getCartTotal } = useContext(CartContext);
   const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [orderConfirmation, setOrderConfirmation] = useState(null);
+  const [cartModal, setCartModal] = useState(null);
   const [formData, setFormData] = useState({
     shippingAddress: '',
     billingAddress: ''
@@ -15,11 +24,9 @@ const Cart = ({ isOpen, onClose }) => {
 
   const handleCheckout = async () => {
     if (!cart || cart.length === 0) {
-      alert('Votre panier est vide');
+      setCartModal({ type: 'alert', title: 'Panier vide', message: 'Votre panier est vide.' });
       return;
     }
-
-    // Demander les informations de livraison
     setShowCheckoutForm(true);
   };
 
@@ -33,7 +40,7 @@ const Cart = ({ isOpen, onClose }) => {
 
   const handleSubmitOrder = async () => {
     if (!formData.shippingAddress.trim()) {
-      alert('Veuillez entrer une adresse de livraison');
+      setCartModal({ type: 'alert', title: 'Adresse manquante', message: 'Veuillez entrer une adresse de livraison.' });
       return;
     }
 
@@ -63,26 +70,73 @@ const Cart = ({ isOpen, onClose }) => {
       console.log('Order response:', response);
 
       if (response && response.id) {
-        alert(`Commande créée avec succès ! Numéro : ${response.orderNumber}`);
         clearCart();
         setShowCheckoutForm(false);
         setFormData({ shippingAddress: '', billingAddress: '' });
-        onClose();
+        setOrderConfirmation(response.orderNumber);
       } else {
-        alert('Erreur lors de la création de la commande: pas d\'ID retourné');
+        setCartModal({ type: 'error', title: 'Erreur', message: 'Impossible de créer la commande : pas d\'ID retourné.' });
       }
     } catch (error) {
       console.error('Erreur lors de la commande:', error);
       const errorMsg = error.response?.data?.message || error.response?.data?.error || error.message;
-      alert('Erreur lors de la création de la commande: ' + errorMsg);
+      setCartModal({ type: 'error', title: 'Erreur de commande', message: errorMsg });
     } finally {
       setIsLoading(false);
     }
   };
 
+  if (cartModal && !cartModal.onConfirm) {
+    return (
+      <ConfirmModal
+        isOpen={true}
+        type={cartModal.type}
+        title={cartModal.title}
+        message={cartModal.message}
+        onConfirm={() => setCartModal(null)}
+      />
+    );
+  }
+
+  if (orderConfirmation) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[9999] p-4">
+        <div className="bg-white rounded-2xl p-10 max-w-sm w-full text-center shadow-2xl">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="font-display text-2xl font-bold text-gray-900 mb-2">Commande confirmée !</h2>
+          <p className="text-gray-500 mb-6 text-sm">Votre commande a bien été enregistrée.</p>
+          <div className="bg-gray-50 rounded-xl px-5 py-3 mb-8 inline-block">
+            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Numéro de commande</p>
+            <p className="font-mono text-lg font-bold text-gray-900">{orderConfirmation}</p>
+          </div>
+          <button
+            onClick={() => { setOrderConfirmation(null); onClose(); }}
+            className="w-full btn-primary py-3 rounded-full font-medium"
+          >
+            Fermer
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isOpen) return null;
 
   return (
+    <>
+    <ConfirmModal
+      isOpen={!!cartModal?.onConfirm}
+      type={cartModal?.type}
+      title={cartModal?.title}
+      message={cartModal?.message}
+      confirmLabel={cartModal?.confirmLabel}
+      onConfirm={cartModal?.onConfirm}
+      onCancel={() => setCartModal(null)}
+    />
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border-2 border-gray-100">
         <div className="flex justify-between items-center mb-6">
@@ -112,7 +166,7 @@ const Cart = ({ isOpen, onClose }) => {
               {cart.map((item) => (
                 <div key={item.id} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
                   <img
-                    src={item.imageUrl || './resources/product.png'}
+                    src={getImageSrc(item.imageUrl) || `${process.env.PUBLIC_URL}/resources/tea-leaves-product.png`}
                     alt={item.name}
                     className="w-16 h-16 object-cover rounded-lg"
                   />
@@ -158,11 +212,12 @@ const Cart = ({ isOpen, onClose }) => {
               
               <div className="flex space-x-4">
                 <button
-                  onClick={() => {
-                    if (window.confirm('Voulez-vous vraiment vider votre panier ?')) {
-                      clearCart();
-                    }
-                  }}
+                  onClick={() => setCartModal({
+                    type: 'confirm', title: 'Vider le panier',
+                    message: 'Voulez-vous vraiment vider votre panier ?',
+                    confirmLabel: 'Vider',
+                    onConfirm: () => { setCartModal(null); clearCart(); }
+                  })}
                   className="flex-1 border-2 border-gray-300 text-gray-700 py-3 rounded-full font-medium hover:border-gray-400 transition-colors"
                 >
                   Vider le panier
@@ -230,6 +285,7 @@ const Cart = ({ isOpen, onClose }) => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

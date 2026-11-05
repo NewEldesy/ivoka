@@ -111,6 +111,13 @@ const Products = () => {
   const teaProducts = products.filter(p => p.category === 'tea');
   const avocadoProducts = products.filter(p => p.category === 'avocado_oil');
 
+  const getImageSrc = (imageUrl) => {
+    if (!imageUrl) return '';
+    // Les URLs de l'API commencent par '/' mais sans le context-path /ivoka-api
+    if (imageUrl.startsWith('/')) return `${process.env.PUBLIC_URL}${imageUrl}`;
+    return imageUrl;
+  };
+
   if (error) {
     return (
       <div className="Products">
@@ -209,7 +216,7 @@ const Products = () => {
                 {teaProducts.map((product) => (
                   <div key={product.id} className="product-card p-6 rounded-2xl fade-in-up visible">
                     <div className="mb-6">
-                      <img src={product.imageUrl} alt={product.name} 
+                      <img src={getImageSrc(product.imageUrl)} alt={product.name}
                            className="w-full h-48 object-cover rounded-xl" />
                     </div>
                     <h3 className="font-display text-xl font-semibold mb-3">{product.name}</h3>
@@ -283,7 +290,7 @@ const Products = () => {
                 {avocadoProducts.map((product) => (
                   <div key={product.id} className="product-card p-6 rounded-2xl fade-in-up visible">
                     <div className="mb-6">
-                      <img src={product.imageUrl} alt={product.name} 
+                      <img src={getImageSrc(product.imageUrl)} alt={product.name}
                            className="w-full h-48 object-cover rounded-xl" />
                     </div>
                     <h3 className="font-display text-xl font-semibold mb-3">{product.name}</h3>

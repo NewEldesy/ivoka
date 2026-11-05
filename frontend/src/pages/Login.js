@@ -35,8 +35,12 @@ const Login = () => {
     }
 
     try {
-      await login(formData.email, formData.password);
-      navigate('/');
+      const response = await login(formData.email, formData.password);
+      if (response?.user?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setLocalError(err.response?.data?.error || 'Erreur de connexion');
     } finally {

@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/ivoka-api/static/css/main.91133c76.css",
+    "main.js": "/ivoka-api/static/js/main.528e797e.js",
+    "static/media/organic-background.png": "/ivoka-api/static/media/organic-background.0746948d470127c88b67.png",
+    "index.html": "/ivoka-api/index.html",
+    "main.91133c76.css.map": "/ivoka-api/static/css/main.91133c76.css.map",
+    "main.528e797e.js.map": "/ivoka-api/static/js/main.528e797e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.91133c76.css",
+    "static/js/main.528e797e.js"
+  ]
+}

@@ -40,6 +40,7 @@ desktop.ini
 *.swo
 
 # Fichiers Claude Code
-MEMORY.md
+*.md
 memory/
 .claude/
+!README.md
